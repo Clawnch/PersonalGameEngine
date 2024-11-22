@@ -1,5 +1,6 @@
 package EulerClasses;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,4 +124,120 @@ public class Problems6To10 {
         return result;
 
     }
+
+    public static long productOfAdjacentInGrid(long[][] grid) {
+        long result = 0;
+        List<Long> resultSubsets = new ArrayList<>();
+        resultSubsets.add(largestHorizontal(grid));
+        resultSubsets.add(largestVertical(grid));
+        resultSubsets.add(largestDiagonalRight(grid));
+        resultSubsets.add(largestDiagonalLeft(grid));
+
+        System.out.println(resultSubsets);
+
+        for (Long i : resultSubsets) {
+            if (result < i) result = i;
+        }
+
+        return result;
+    }
+
+    private static long largestHorizontal(long[][] grid) {
+        long result = 0;
+        for (int i = 0; i < grid.length - 4; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                long subProduct = grid[i][j] * grid[i+1][j] * grid[i+2][j] * grid[i+3][j];
+                if (result < subProduct) result = subProduct;
+            }
+        }
+        return result;
+    }
+
+    private static long largestVertical(long[][] grid) {
+        long result = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length - 4; j++) {
+                long subProduct = grid[i][j] * grid[i][j+1] * grid[i][j+2] * grid[i][j+3];
+                if (result < subProduct) result = subProduct;
+            }
+        }
+        return result;
+    }
+
+    private static long largestDiagonalRight(long[][] grid) {
+        long result = 0;
+        for (int i = 0; i < grid.length - 4; i++) {
+            for (int j = 0; j < grid[0].length - 4; j++) {
+                long subProduct = grid[i][j] * grid[i+1][j+1] * grid[i+2][j+2] * grid[i+3][j+3];
+                if (result < subProduct) result = subProduct;
+            }
+        }
+        return result;
+    }
+
+    private static long largestDiagonalLeft(long[][] grid) {
+        long result = 0;
+        for (int i = 3; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length - 4; j++) {
+                long subProduct = grid[i][j] * grid[i-1][j+1] * grid[i-2][j+2] * grid[i-3][j+   3];
+                if (result < subProduct) result = subProduct;
+            }
+        }
+        return result;
+    }
+
+    public static long triangleNumbers(int numberOfDivisors) {
+        int numberOfFactors = 0;
+        long increment = 1, triangleNumber = 0;
+        while (numberOfFactors < numberOfDivisors) {
+            triangleNumber += increment;
+            increment++;
+            numberOfFactors = countNumberOfFactors(triangleNumber);
+            System.out.println(triangleNumber + " :: " + numberOfFactors + " ++ " + increment);
+        }
+        return triangleNumber;
+    }
+
+    private static int countNumberOfFactors(long number) {
+        int factors = 0;
+        for (int i = 1; i < (number / 2) + 1; i++) {
+            if (number % i == 0) {
+                factors++;
+            }
+        }
+        return factors;
+    }
+
+    public static String firstTenStringMath(String[] numbers) {
+        BigInteger bigInt = new BigInteger("0");
+
+        for (String s : numbers) {
+            bigInt = bigInt.add(new BigInteger(s));
+        }
+        return bigInt.toString();
+    }
+
+    public static int longestCollatzSequence() {
+        int maxLength = 0, starterAttributed = 0;
+        for (int i = 2; i < 1000000; i++) {
+            int steps = 0;
+            long collatz = i;
+            while (collatz != 1) {
+                if (collatz % 2 == 0) {
+                    collatz = collatz / 2;
+                } else {
+                    collatz = (collatz * 3) + 1;
+                }
+                steps++;
+            }
+            if (steps > maxLength) {
+                maxLength = steps;
+                starterAttributed = i;
+            }
+            System.out.println(String.format("i: %s, steps: %s, maxLength: %s, starterAttributed: %s",
+                    i, steps, maxLength, starterAttributed));
+        }
+        return starterAttributed;
+    }
+
 }
