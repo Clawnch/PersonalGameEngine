@@ -1,4 +1,4 @@
-package GameTesting;
+package GameTesting.BasicGui;
 
 import javax.swing.*;
 import java.awt.*;

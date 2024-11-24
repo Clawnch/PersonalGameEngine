@@ -1,4 +1,4 @@
-package GameTesting;
+package GameTesting.BasicGui;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -188,7 +188,7 @@ public class CoordinateGui extends JFrame {
         CoordinateDegrees degrees = new CoordinateDegrees(hourLong, minuteLong, secondLong, hourLat, minuteLat, secondLat);
         DecimalPair debugPair = degrees.calculateCoordinates(feet, directionDegrees);
 
-        System.out.println("Button pressed! decimal coordinates are \n" + debugPair");
+        System.out.println("Button pressed! decimal coordinates are \n" + debugPair);
 
         calculatedLongitude.setText(String.format("Longitude: %sD %sM %sS", degrees.getHourNS(), degrees.getMinuteNS(), degrees.getSecondNS()));
         calculatedLatitude.setText(String.format("Latitude: %sD %sM %sS", degrees.getHourEW(), degrees.getMinuteEW(), degrees.getSecondEW()));

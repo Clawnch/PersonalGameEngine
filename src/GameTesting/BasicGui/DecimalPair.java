@@ -1,4 +1,4 @@
-package GameTesting;
+package GameTesting.BasicGui;
 
 public class DecimalPair {
 

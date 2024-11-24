@@ -1,5 +1,7 @@
 package GameTesting;
 
+import GameTesting.BasicGui.CoordinateGui;
+
 import java.awt.*;
 
 public class Main {
