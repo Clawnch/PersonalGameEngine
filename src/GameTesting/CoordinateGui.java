@@ -1,41 +1,61 @@
 package GameTesting;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class CoordinateGui extends JFrame {
 
-    private JLabel hour, minute, second, feet, distance, calcHour, calcMinute, calcSecond, direction;
+    private JLabel hourLongitude, minuteLongitude, secondLongitude,
+            hourLatitude, minuteLatitude, secondLatitude,
+            feet, distance, direction,
+            calculatedLongitude, calculatedLatitude;
 
     private JButton submitButton;
 
-    private JTextField hourInput, minuteInput, secondInput, distanceInput, directionInput;
+    private JTextField hourLongInput, minuteLongInput, secondLongInput,
+            hourLatInput, minuteLatInput, secondLatInput,
+            distanceInput, directionInput;
 
     public CoordinateGui() {
-        setConstants();
+        instantiateFields();
         initComponents();
     }
 
-    private void setConstants() {
-        hour = new JLabel();
-        minute = new JLabel();
-        second = new JLabel();
+    private void instantiateFields() {
+        hourLongitude = new JLabel();
+        minuteLongitude = new JLabel();
+        secondLongitude = new JLabel();
+        hourLatitude = new JLabel();
+        minuteLatitude = new JLabel();
+        secondLatitude = new JLabel();
+
         feet = new JLabel();
         distance = new JLabel();
         direction = new JLabel();
         submitButton = new JButton();
-        hourInput = new JTextField();
-        minuteInput = new JTextField();
-        secondInput  = new JTextField();
+
+        hourLongInput = new JTextField();
+        minuteLongInput = new JTextField();
+        secondLongInput = new JTextField();
+        hourLatInput = new JTextField();
+        minuteLatInput = new JTextField();
+        secondLatInput = new JTextField();
+
         distanceInput = new JTextField();
         directionInput= new JTextField();
-        calcHour = new JLabel();
-        calcMinute = new JLabel();
-        calcSecond = new JLabel();
 
-        hour.setText("hour");
-        minute.setText("minutes");
-        second.setText("seconds");
+        calculatedLongitude = new JLabel();
+        calculatedLatitude = new JLabel();
+
+        hourLongitude.setText("hour");
+        minuteLongitude.setText("minutes");
+        secondLongitude.setText("seconds");
+
+        hourLatitude.setText("hour");
+        minuteLatitude.setText("minutes");
+        secondLatitude.setText("seconds");
+
         direction.setText("Degrees (0 is N, 180 is S)");
 
         feet.setText("ft");
@@ -43,14 +63,20 @@ public class CoordinateGui extends JFrame {
 
         submitButton.setText("Submit");
 
-        calcHour.setText("Calculated Hour");
-        calcMinute.setText("Calculated Minute");
-        calcSecond.setText("Calculated Second");
+        calculatedLongitude.setText("Calculated Longitude");
+        calculatedLatitude.setText("Calculated Latitude");
     }
 
     private void initComponents() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Coordinate GUI");
+
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buttonActionOnPress(e);
+            }
+        });
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -61,17 +87,20 @@ public class CoordinateGui extends JFrame {
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup() // input label space, creates the input row
-                                                .addComponent(hourInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(hour)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(minuteInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(minute)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(secondInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(second))
+                                                .addComponent(hourLongInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(hourLongitude)
+                                                .addComponent(minuteLongInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(minuteLongitude)
+                                                .addComponent(secondLongInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(secondLongitude))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(hourLatInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(hourLatitude)
+                                                .addComponent(minuteLatInput,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(minuteLatitude)
+                                                .addComponent(secondLatInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(secondLatitude)
+                                        )
                                         .addGroup(layout.createSequentialGroup() //creates Distance input row
                                                 .addComponent(distance)
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -85,28 +114,36 @@ public class CoordinateGui extends JFrame {
                                         .addGroup(layout.createSequentialGroup() //Button Row
                                                 .addComponent(submitButton))
                                         .addGroup(layout.createSequentialGroup() //Calculated coordinates row, label label gap
-                                                .addComponent(calcHour)
+                                                .addComponent(calculatedLongitude)
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(calcMinute)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(calcSecond)))
+                                                .addComponent(calculatedLatitude)))
                                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
-        layout.linkSize(SwingConstants.HORIZONTAL, submitButton, hourInput, minuteInput, secondInput, distanceInput, directionInput);
+        layout.linkSize(SwingConstants.HORIZONTAL, submitButton,
+                hourLongInput, minuteLongInput, secondLongInput,
+                hourLatInput, minuteLatInput, secondLatInput,
+                distanceInput, directionInput);
 
         layout.setVerticalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(hourInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(hour)
-                                        .addComponent(minuteInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(minute)
-                                        .addComponent(secondInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(second)
+                                        .addComponent(hourLongInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(hourLongitude)
+                                        .addComponent(minuteLongInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(minuteLongitude)
+                                        .addComponent(secondLongInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(secondLongitude)
                                 )
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(hourLatInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(hourLatitude)
+                                        .addComponent(minuteLatInput,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(minuteLatitude)
+                                        .addComponent(secondLatInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(secondLatitude))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                         .addComponent(distance)
@@ -118,9 +155,8 @@ public class CoordinateGui extends JFrame {
                                 )
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(calcHour)
-                                        .addComponent(calcMinute)
-                                        .addComponent(calcSecond)
+                                        .addComponent(calculatedLongitude)
+                                        .addComponent(calculatedLatitude)
                                 )
 
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -129,6 +165,35 @@ public class CoordinateGui extends JFrame {
         );
 
         pack();
+
+
+    }
+
+    private void buttonActionOnPress (ActionEvent event) {
+        int hourLong, minuteLong, secondLong,
+                hourLat, minuteLat, secondLat,
+                feet;
+        double directionDegrees = Double.parseDouble(directionInput.getText());
+
+        hourLong = Integer.parseInt(hourLongInput.getText());
+        minuteLong = Integer.parseInt(minuteLongInput.getText());
+        secondLong = Integer.parseInt(secondLongInput.getText());
+
+        hourLat = Integer.parseInt(hourLatInput.getText());
+        minuteLat = Integer.parseInt(minuteLatInput.getText());
+        secondLat = Integer.parseInt(secondLatInput.getText());
+
+        feet = Integer.parseInt(distanceInput.getText());
+
+        CoordinateDegrees degrees = new CoordinateDegrees(hourLong, minuteLong, secondLong, hourLat, minuteLat, secondLat);
+        DecimalPair debugPair = degrees.calculateCoordinates(feet, directionDegrees);
+
+        System.out.println("Button pressed! decimal coordinates are \n" + debugPair");
+
+        calculatedLongitude.setText(String.format("Longitude: %sD %sM %sS", degrees.getHourNS(), degrees.getMinuteNS(), degrees.getSecondNS()));
+        calculatedLatitude.setText(String.format("Latitude: %sD %sM %sS", degrees.getHourEW(), degrees.getMinuteEW(), degrees.getSecondEW()));
+
+        //Convert to degree Calculator object or create a math method to handle object creation and math
 
 
     }
