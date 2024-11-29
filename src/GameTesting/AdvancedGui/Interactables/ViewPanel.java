@@ -18,9 +18,16 @@ public class ViewPanel {
         //System.out.printf("Width: %s - Height %s%n", width, height);
     }
 
-    public void onClick(int x, int y) {
+    public void onLeftClick(int x, int y) {
         for (ViewPanel panel : panelsToUpdate) {
-            panel.onClick(x, y);
+            if (IntractableHelper.isInClickArea(panel, x, y)) panel.onLeftClick(x, y);
+        }
+    }
+
+    public void onRightClick(int x, int y) {
+        System.out.println("ViewPanel right click");
+        for (ViewPanel panel : panelsToUpdate) {
+            if (IntractableHelper.isInClickArea(panel, x, y)) panel.onRightClick(x, y);
         }
     }
 

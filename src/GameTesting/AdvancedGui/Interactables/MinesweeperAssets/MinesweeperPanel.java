@@ -76,11 +76,22 @@ public class MinesweeperPanel extends ViewPanel {
     }
 
 
-    public void onClick(int x, int y) {
+    public void onLeftClick(int x, int y) {
         for (MineButton[] row : buttonArray) {
             for (MineButton mine : row) {
                 if (IntractableHelper.isInClickArea(mine, x,y)) {
-                    mine.onClick(x, y);
+                    mine.onLeftClick(x, y);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onRightClick(int x, int y) {
+        for (MineButton[] row : buttonArray) {
+            for (MineButton mine : row) {
+                if (IntractableHelper.isInClickArea(mine, x,y)) {
+                    mine.onRightClick(x, y);
                 }
             }
         }

@@ -8,6 +8,9 @@ import java.awt.event.MouseListener;
 
 public class Mouse implements MouseListener {
 
+    private final int leftClick = MouseEvent.BUTTON1;
+    private final int rightClick = MouseEvent.BUTTON3;
+    private final int middleClick = MouseEvent.BUTTON2;
     private ViewPanel viewPanel;
     private JPanel graphicsPanel;
 
@@ -19,7 +22,14 @@ public class Mouse implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        viewPanel.onClick(e.getX(), e.getY());
+        int mouseButton = e.getButton();
+        //System.out.println("Mouse button: " + mouseButton);
+        if (mouseButton == leftClick) {
+            viewPanel.onLeftClick(e.getX(), e.getY());
+        }
+        if (mouseButton == rightClick) {
+            viewPanel.onRightClick(e.getX(), e.getY());
+        }
         graphicsPanel.repaint();
         //System.out.printf("Clicked: x:%s y:%s%n", e.getX(), e.getY());
     }

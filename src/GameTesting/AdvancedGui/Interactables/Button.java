@@ -10,7 +10,7 @@ public class Button extends ViewPanel {
         super(width, height, x ,y);
         green = new Color(75, 230, 100);
         red = new Color(230, 75, 100);
-        System.out.println("Instantiated: " + this);
+        //System.out.println("Instantiated: " + this);
     }
 
     boolean isClickInArea(int x, int y) {
@@ -29,12 +29,17 @@ public class Button extends ViewPanel {
     }
 
     @Override
-    public void onClick(int x, int y) {
+    public void onLeftClick(int x, int y) {
 
         if (isClickInArea(x, y)) {
             isClicked = !isClicked;
             //debugClick(x, y);
         }
+    }
+
+    @Override
+    public void onRightClick(int x, int y) {
+        //isClicked = !isClicked;
     }
 
     @Override

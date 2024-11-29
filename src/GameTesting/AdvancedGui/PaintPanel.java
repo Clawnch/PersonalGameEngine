@@ -23,16 +23,16 @@ public class PaintPanel extends JPanel {
         overall = new ViewPanel(500, 500,0,0);
         minesweeperPanel = new MinesweeperPanel(this.getPreferredSize().width, this.getPreferredSize().height, 10, 10);
 
-        ViewPanel secondPanel = new ViewPanel(500, 500,250,250);
+        //ViewPanel secondPanel = new ViewPanel(500, 500,250,250);
 
         //X and Y still use absolute coordinates and not relative to the panel they are a part of
-        secondPanel.addButton(new Button(0, 0, 50, 50));
+        //secondPanel.addButton(new Button(0, 0, 50, 50));
 
         overall.addButton(minesweeperPanel);
-        overall.addButton(secondPanel);
+        //overall.addButton(secondPanel);
 
         System.out.println(overall);
-        System.out.println(secondPanel);
+        //System.out.println(secondPanel);
 
         mouse = new Mouse(overall, this);
         addMouseListener(mouse);

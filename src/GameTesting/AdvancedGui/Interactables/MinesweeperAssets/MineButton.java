@@ -1,7 +1,6 @@
 package GameTesting.AdvancedGui.Interactables.MinesweeperAssets;
 
 import GameTesting.AdvancedGui.Interactables.Button;
-import GameTesting.AdvancedGui.Interactables.IntractableHelper;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,7 +11,8 @@ public class MineButton extends Button {
     enum buttonState {
         inactive,
         mine,
-        number
+        number,
+        flag
     }
 
     int x, y, width, height;
@@ -44,6 +44,9 @@ public class MineButton extends Button {
         if (state == buttonState.number) {
             drawNumber(g);
         }
+        if (state == buttonState.flag) {
+            drawFlag(g);
+        }
         drawButtonBorder(g);
     }
 
@@ -74,21 +77,40 @@ public class MineButton extends Button {
         g.drawRect(x, y, width, height);
     }
 
+    private void drawFlag(Graphics g) {
+        drawCovered(g);
+        g.setColor(new Color(255, 100, 25));
+        g.fillRect(x + (width/2), y + (height / 3), width / 2, height / 3);
+        g.fillRect(x + (width/2), y + (height / 3), width / 10, height * 3/5);
+    }
+
     @Override
-    public void onClick(int x, int y) {
-        if (containsMine) {
-            state = buttonState.mine;
-        } else {
-            state = buttonState.number;
-            if (numberValue == 0) {
-                onClickAdjacent();
+    public void onLeftClick(int x, int y) {
+        if (state != buttonState.flag) {
+            if (containsMine) {
+                state = buttonState.mine;
+            } else {
+                state = buttonState.number;
+                if (numberValue == 0) {
+                    onClickAdjacent();
+                }
             }
         }
     }
 
+    @Override
+    public void onRightClick(int x, int y) {
+        if (state == buttonState.inactive) {
+            state = buttonState.flag;
+        } else if (state == buttonState.flag) {
+            state = buttonState.inactive;
+        }
+
+    }
+
     private void onClickAdjacent() {
         for (MineButton button : adjacentMines) {
-            if (button.getState() == buttonState.inactive) button.onClick(0,0);
+            if (button.getState() == buttonState.inactive) button.onLeftClick(0,0);
         }
     }
 
