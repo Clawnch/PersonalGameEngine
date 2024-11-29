@@ -2,7 +2,7 @@ package GameTesting.AdvancedGui;
 
 import GameTesting.AdvancedGui.Input.Mouse;
 import GameTesting.AdvancedGui.Interactables.Button;
-import GameTesting.AdvancedGui.Interactables.MinesweeperAssets.MineButton;
+import GameTesting.AdvancedGui.Interactables.MinesweeperAssets.MinesweeperPanel;
 import GameTesting.AdvancedGui.Interactables.ViewPanel;
 
 import javax.swing.*;
@@ -15,30 +15,27 @@ public class PaintPanel extends JPanel {
     private int squareW = 20;
     private int squareH = 20;
 
-    private ViewPanel viewPanel;
+    private ViewPanel minesweeperPanel, overall;
     private Mouse mouse;
 
     public PaintPanel() {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        viewPanel = new ViewPanel(this.getPreferredSize().width, this.getPreferredSize().height);
-        Button b = new MineButton(75,75,50,50);
-        viewPanel.addButton(b);
-        mouse = new Mouse(viewPanel, this);
+        overall = new ViewPanel(500, 500,0,0);
+        minesweeperPanel = new MinesweeperPanel(this.getPreferredSize().width, this.getPreferredSize().height, 10, 10);
+
+        ViewPanel secondPanel = new ViewPanel(500, 500,250,250);
+
+        //X and Y still use absolute coordinates and not relative to the panel they are a part of
+        secondPanel.addButton(new Button(0, 0, 50, 50));
+
+        overall.addButton(minesweeperPanel);
+        overall.addButton(secondPanel);
+
+        System.out.println(overall);
+        System.out.println(secondPanel);
+
+        mouse = new Mouse(overall, this);
         addMouseListener(mouse);
-//
-//        addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//                moveSquare(e.getX(), e.getY());
-//            }
-//        });
-//
-//        addMouseMotionListener(new MouseAdapter() {
-//            @Override
-//            public void mouseDragged(MouseEvent e) {
-//                moveSquare(e.getX(), e.getY());
-//            }
-//        });
     }
 
     public Dimension getPreferredSize() {
@@ -49,22 +46,7 @@ public class PaintPanel extends JPanel {
         super.paintComponent(g);
         g.setColor(Color.WHITE);
         g.fillRect(0,0,250, 250);
-        viewPanel.onPaint(g);
-//        g.drawString("This is my custom Panel!", 10,20);
-//        g.setColor(Color.RED);
-//        g.fillRect(squareX,squareY,squareW,squareH);
-//        g.setColor(Color.BLACK);
-//        g.drawRect(squareX,squareY,squareW,squareH);
-    }
-
-    private void moveSquare(int x, int y) {
-        int OFFSET = 1;
-        if ((squareX != x || squareY != y)) {
-            repaint(squareX,squareY,squareW+OFFSET,squareH+OFFSET);
-            squareX=x;
-            squareY=y;
-            repaint(squareX,squareY,squareW+OFFSET,squareH+OFFSET);
-        }
+        overall.onPaint(g);
     }
 
 

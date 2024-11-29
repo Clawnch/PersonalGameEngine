@@ -3,17 +3,14 @@ package GameTesting.AdvancedGui.Interactables;
 import java.awt.*;
 
 public class Button extends ViewPanel {
-    int x, y;
     private boolean isClicked = false;
     private final Color green, red;
 
     public Button(int x, int y, int width, int height) {
-        super(width, height);
-        this.x = x;
-        this.y = y;
+        super(width, height, x ,y);
         green = new Color(75, 230, 100);
         red = new Color(230, 75, 100);
-        //System.out.println("Instantiated: " + this);
+        System.out.println("Instantiated: " + this);
     }
 
     boolean isClickInArea(int x, int y) {

@@ -6,18 +6,20 @@ import java.util.List;
 
 public class ViewPanel {
 
-    int width, height;
-    private List<Button> panelsToUpdate;
+    int width, height, x, y;
+    private List<ViewPanel> panelsToUpdate;
 
-    public ViewPanel(int width, int height) {
+    public ViewPanel(int width, int height, int x, int y) {
         this.width = width;
         this.height = height;
+        this.x = x;
+        this.y = y;
         panelsToUpdate = new ArrayList<>();
-        System.out.printf("Width: %s - Height %s%n", width, height);
+        //System.out.printf("Width: %s - Height %s%n", width, height);
     }
 
     public void onClick(int x, int y) {
-        for (Button panel : panelsToUpdate) {
+        for (ViewPanel panel : panelsToUpdate) {
             panel.onClick(x, y);
         }
     }
@@ -27,12 +29,18 @@ public class ViewPanel {
     }
 
     public void onPaint(Graphics g) {
-        for (Button b : panelsToUpdate) {
+        for (ViewPanel b : panelsToUpdate) {
             b.onPaint(g);
         }
     }
 
-    public void addButton(Button b) {
+    public void addButton(ViewPanel b) {
         panelsToUpdate.add(b);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ViewPanel X:%s,Y:%s, width:%s,height:%s, with %s children",
+                x, y, width, height, panelsToUpdate.size());
     }
 }
