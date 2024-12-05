@@ -1,6 +1,6 @@
 package GameTesting.AdvancedGui.Interactables.MinesweeperAssets;
 
-import GameTesting.AdvancedGui.Interactables.Button;
+import GameTesting.AdvancedGui.Interactables.ViewPanel.Button;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -135,5 +135,12 @@ public class MineButton extends Button {
             if (b.containsMine()) adjacentMineCount++;
         }
         numberValue = adjacentMineCount;
+    }
+
+    public void setContainsMine(boolean containsMine) {
+        this.containsMine = containsMine;
+    }
+    public void resetAdjacent() {
+        adjacentMines = new ArrayList<>();
     }
 }

@@ -1,6 +1,6 @@
 package GameTesting.AdvancedGui.Input;
 
-import GameTesting.AdvancedGui.Interactables.ViewPanel;
+import GameTesting.AdvancedGui.Interactables.ViewPanel.ViewPanel;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;

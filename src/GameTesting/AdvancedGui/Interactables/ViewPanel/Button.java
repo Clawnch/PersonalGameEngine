@@ -1,4 +1,4 @@
-package GameTesting.AdvancedGui.Interactables;
+package GameTesting.AdvancedGui.Interactables.ViewPanel;
 
 import java.awt.*;
 

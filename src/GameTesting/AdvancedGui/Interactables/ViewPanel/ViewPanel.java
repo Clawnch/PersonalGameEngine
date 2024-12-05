@@ -1,12 +1,12 @@
-package GameTesting.AdvancedGui.Interactables;
+package GameTesting.AdvancedGui.Interactables.ViewPanel;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewPanel {
+public class ViewPanel implements Interactable {
 
-    int width, height, x, y;
+    protected int width, height, x, y;
     private List<ViewPanel> panelsToUpdate;
 
     public ViewPanel(int width, int height, int x, int y) {
@@ -20,14 +20,14 @@ public class ViewPanel {
 
     public void onLeftClick(int x, int y) {
         for (ViewPanel panel : panelsToUpdate) {
-            if (IntractableHelper.isInClickArea(panel, x, y)) panel.onLeftClick(x, y);
+            if (ViewPanelHelper.isInClickArea(panel, x, y)) panel.onLeftClick(x, y);
         }
     }
 
     public void onRightClick(int x, int y) {
-        System.out.println("ViewPanel right click");
+        //System.out.println("ViewPanel right click");
         for (ViewPanel panel : panelsToUpdate) {
-            if (IntractableHelper.isInClickArea(panel, x, y)) panel.onRightClick(x, y);
+            if (ViewPanelHelper.isInClickArea(panel, x, y)) panel.onRightClick(x, y);
         }
     }
 

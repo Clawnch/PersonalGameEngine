@@ -1,6 +1,6 @@
-package GameTesting.AdvancedGui.Interactables;
+package GameTesting.AdvancedGui.Interactables.ViewPanel;
 
-public class IntractableHelper {
+public class ViewPanelHelper {
 
     public static boolean isInClickArea(ViewPanel b, int x, int y) {
         boolean betweenWidth = x >= b.x && x <= b.x + b.width;
