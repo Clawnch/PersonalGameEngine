@@ -143,4 +143,8 @@ public class MineButton extends Button {
     public void resetAdjacent() {
         adjacentMines = new ArrayList<>();
     }
+
+    public void resetState() {
+        state = buttonState.inactive;
+    }
 }

@@ -10,39 +10,64 @@ import java.util.Random;
 
 public class MinesweeperField implements Interactable {
 
+    enum GameStatus {
+        gameOver,
+        currentGame
+    }
+
     private int numOfMines = 10;
+    private int startX, startY;
     private Random random;
 
     private MineButton[][] minefield;
 
     private int rows, cols;
 
-    private boolean firstClick = true;
+    private boolean firstClick = true, gameOverClick = false;
 
-    public MinesweeperField(int rows, int cols, int numOfMines) {
+    private List<MineButton> currentMines;
+
+    public MinesweeperField(int startX, int startY, int rows, int cols, int numOfMines) {
         this.rows = rows;
         this.cols = cols;
         this.numOfMines = numOfMines;
+        this.startX = startX;
+        this.startY = startY;
 
         minefield = setUpField(rows, cols);
+        currentMines = new ArrayList<>();
     }
 
     public void onLeftClick(int x, int y) {
-        if (firstClick) {
-            setUpMinefield(x, y);
-            firstClick = false;
-        }
-        for (MineButton[] row : minefield) {
-            for (MineButton mine : row) {
-                if (ViewPanelHelper.isInClickArea(mine, x, y)) {
-                    mine.onLeftClick(x, y);
+        if (!gameOverClick) {
+            if (firstClick) {
+                setUpMinefield(x, y);
+                firstClick = false;
+            }
+            for (MineButton[] row : minefield) {
+                for (MineButton mine : row) {
+                    if (ViewPanelHelper.isInClickArea(mine, x, y)) {
+                        mine.onLeftClick(x, y);
+                    }
                 }
             }
         }
+
+        if (checkGameStatus() == GameStatus.gameOver) {
+            handleGameOver();
+        }
+    }
+
+    private void handleGameOver() {
+        if (gameOverClick) {
+            resetBoard();
+            return;
+        }
+        gameOverClick = true;
     }
 
     public void onRightClick(int x, int y) {
-        if (!firstClick) {
+        if (!firstClick && !gameOverClick) {
             for (MineButton[] row : minefield) {
                 for (MineButton mine : row) {
                     if (ViewPanelHelper.isInClickArea(mine, x, y)) {
@@ -73,6 +98,7 @@ public class MinesweeperField implements Interactable {
             if (!mine.equals(startingCoordinate) && !mineCoordinates.contains(mine)) {
                 minefield[x][y].setContainsMine(true);
                 mineCoordinates.add(mine);
+                currentMines.add(minefield[x][y]);
             }
         }
         setUpAdjacent();
@@ -80,11 +106,11 @@ public class MinesweeperField implements Interactable {
 
     private MineButton[][] setUpField(int numOfRows, int numOfColumns) {
         MineButton[][] buttonArray = new MineButton[numOfRows][numOfColumns];
-        int currX = 0, currY = 0;
+        int generalSpacing = 5;
+        int currX, currY = startY;
         for (int i = 0; i < numOfRows; i++) {
-            int generalSpacing = 5;
             currY += generalSpacing;
-            currX = generalSpacing;
+            currX = startX + generalSpacing;
             int mineSize = 15;
             for (int j = 0; j < numOfColumns; j++) {
                 currX += generalSpacing;
@@ -133,14 +159,25 @@ public class MinesweeperField implements Interactable {
         }
     }
 
+    public GameStatus checkGameStatus() {
+        for (MineButton m : currentMines) {
+            if (m.getState().equals(MineButton.buttonState.mine)) {
+                return GameStatus.gameOver;
+            }
+        }
+        return GameStatus.currentGame;
+    }
 
 
     public void resetBoard() {
         firstClick = true;
+        gameOverClick = false;
+        currentMines = new ArrayList<>();
         for (MineButton[] mineRow : minefield) {
             for (MineButton mine : mineRow) {
                 mine.setContainsMine(false);
                 mine.resetAdjacent();
+                mine.resetState();
             }
         }
     }

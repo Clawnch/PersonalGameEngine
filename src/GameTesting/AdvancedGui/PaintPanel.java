@@ -9,11 +9,6 @@ import java.awt.*;
 
 public class PaintPanel extends JPanel {
 
-    private int squareX = 50;
-    private int squareY = 50;
-    private int squareW = 20;
-    private int squareH = 20;
-
     private ViewPanel minesweeperPanel, overall;
     private Mouse mouse;
 
@@ -43,7 +38,7 @@ public class PaintPanel extends JPanel {
         g.fillRect(0,0,250, 250);
         overall.onPaint(g);
 
-        System.out.println(this.getWidth() + ":" + this.getHeight());
+        //System.out.println(this.getWidth() + ":" + this.getHeight());
     }
 
 

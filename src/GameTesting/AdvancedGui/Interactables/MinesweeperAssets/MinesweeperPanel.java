@@ -9,19 +9,12 @@ public class MinesweeperPanel extends ViewPanel {
 
     private MinesweeperField gameField;
 
-
-
     public MinesweeperPanel(int width, int height) {
         super(width, height, 0, 0);
 
-        gameField = new MinesweeperField(10, 10, 10);
+        gameField = new MinesweeperField(25, 25, 10, 10, 10);
 
     }
-
-
-
-
-
 
     public void onLeftClick(int x, int y) {
         gameField.onLeftClick(x, y);
@@ -35,8 +28,5 @@ public class MinesweeperPanel extends ViewPanel {
     public void onPaint(Graphics g) {
         gameField.onPaint(g);
     }
-
-
-
 
 }
