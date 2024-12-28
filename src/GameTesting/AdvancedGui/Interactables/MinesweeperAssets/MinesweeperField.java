@@ -12,7 +12,8 @@ public class MinesweeperField implements Interactable {
 
     enum GameStatus {
         gameOver,
-        currentGame
+        currentGame,
+        gameWon
     }
 
     private int numOfMines = 10;
@@ -25,7 +26,7 @@ public class MinesweeperField implements Interactable {
 
     private boolean firstClick = true, gameOverClick = false;
 
-    private List<MineButton> currentMines;
+    private List<MineButton> currentMines, nonMineTiles;
 
     public MinesweeperField(int startX, int startY, int rows, int cols, int numOfMines) {
         this.rows = rows;
@@ -34,8 +35,9 @@ public class MinesweeperField implements Interactable {
         this.startX = startX;
         this.startY = startY;
 
-        minefield = setUpField(rows, cols);
         currentMines = new ArrayList<>();
+        nonMineTiles = new ArrayList<>();
+        minefield = setUpField(rows, cols);
     }
 
     public void onLeftClick(int x, int y) {
@@ -53,17 +55,24 @@ public class MinesweeperField implements Interactable {
             }
         }
 
-        if (checkGameStatus() == GameStatus.gameOver) {
+        if (checkGameStatus() == GameStatus.gameOver || checkGameStatus() == GameStatus.gameWon) {
             handleGameOver();
         }
     }
 
     private void handleGameOver() {
-        if (gameOverClick) {
-            resetBoard();
-            return;
-        }
         gameOverClick = true;
+        if (checkGameStatus() == GameStatus.gameWon) {
+            for (MineButton mine : currentMines) {
+                if (mine.getState() != MineButton.buttonState.flag) {
+                    mine.onRightClick(0, 0);
+                }
+            }
+        } else {
+            for (MineButton mine : currentMines) {
+                mine.onLeftClick(0, 0);
+            }
+        }
     }
 
     public void onRightClick(int x, int y) {
@@ -99,6 +108,7 @@ public class MinesweeperField implements Interactable {
                 minefield[x][y].setContainsMine(true);
                 mineCoordinates.add(mine);
                 currentMines.add(minefield[x][y]);
+                nonMineTiles.remove(minefield[x][y]);
             }
         }
         setUpAdjacent();
@@ -117,6 +127,7 @@ public class MinesweeperField implements Interactable {
                 MineButton mine = new MineButton(currX, currY, mineSize, mineSize, false);
                 buttonArray[i][j] = mine;
                 currX += mineSize;
+                nonMineTiles.add(mine);
             }
             currY += mineSize;
         }
@@ -165,7 +176,17 @@ public class MinesweeperField implements Interactable {
                 return GameStatus.gameOver;
             }
         }
-        return GameStatus.currentGame;
+        return checkVictoryCondition();
+    }
+
+    public GameStatus checkVictoryCondition() {
+        boolean passedCheck = true;
+        for (MineButton mine : nonMineTiles) {
+            if (mine.getState() != MineButton.buttonState.number) {
+                return GameStatus.currentGame;
+            }
+        }
+        return GameStatus.gameWon;
     }
 
 
