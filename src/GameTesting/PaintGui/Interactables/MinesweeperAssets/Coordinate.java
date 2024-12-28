@@ -1,4 +1,4 @@
-package GameTesting.AdvancedGui.Interactables.MinesweeperAssets;
+package GameTesting.PaintGui.Interactables.MinesweeperAssets;
 
 public class Coordinate {
 

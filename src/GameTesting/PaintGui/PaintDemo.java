@@ -1,4 +1,4 @@
-package GameTesting.AdvancedGui;
+package GameTesting.PaintGui;
 
 import javax.swing.*;
 

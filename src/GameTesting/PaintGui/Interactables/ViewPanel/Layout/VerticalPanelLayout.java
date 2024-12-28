@@ -1,6 +1,6 @@
-package GameTesting.AdvancedGui.Interactables.ViewPanel.Layout;
+package GameTesting.PaintGui.Interactables.ViewPanel.Layout;
 
-import GameTesting.AdvancedGui.Interactables.ViewPanel.ViewPanel;
+import GameTesting.PaintGui.Interactables.ViewPanel.ViewPanel;
 
 public class VerticalPanelLayout extends ViewPanel {
 

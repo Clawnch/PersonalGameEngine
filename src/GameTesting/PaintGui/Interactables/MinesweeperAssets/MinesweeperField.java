@@ -1,7 +1,7 @@
-package GameTesting.AdvancedGui.Interactables.MinesweeperAssets;
+package GameTesting.PaintGui.Interactables.MinesweeperAssets;
 
-import GameTesting.AdvancedGui.Interactables.ViewPanel.Interactable;
-import GameTesting.AdvancedGui.Interactables.ViewPanel.ViewPanelHelper;
+import GameTesting.PaintGui.Interactables.ViewPanel.Interactable;
+import GameTesting.PaintGui.Interactables.ViewPanel.ViewPanelHelper;
 
 import java.awt.*;
 import java.util.ArrayList;
