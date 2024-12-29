@@ -179,7 +179,7 @@ public class MinesweeperField implements Interactable {
         return checkVictoryCondition();
     }
 
-    public GameStatus checkVictoryCondition() {
+    private GameStatus checkVictoryCondition() {
         boolean passedCheck = true;
         for (MineButton mine : nonMineTiles) {
             if (mine.getState() != MineButton.buttonState.number) {
