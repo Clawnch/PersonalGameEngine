@@ -6,6 +6,7 @@ import GameTesting.AdvancedGui.Interactables.ViewPanel.ViewPanelHelper;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class MinesweeperField implements Interactable {
@@ -27,6 +28,7 @@ public class MinesweeperField implements Interactable {
     private boolean firstClick = true, gameOverClick = false;
 
     private List<MineButton> currentMines, nonMineTiles;
+    private Thread stopwatchThread;
 
     public MinesweeperField(int startX, int startY, int rows, int cols, int numOfMines) {
         this.rows = rows;
@@ -53,6 +55,7 @@ public class MinesweeperField implements Interactable {
                     }
                 }
             }
+            handleStopwatchOnGameState();
         }
 
         if (checkGameStatus() == GameStatus.gameOver || checkGameStatus() == GameStatus.gameWon) {
@@ -112,6 +115,20 @@ public class MinesweeperField implements Interactable {
             }
         }
         setUpAdjacent();
+        stopwatchThread.start();
+    }
+
+    public void addStopwatch(Thread stopwatchThread) {
+        this.stopwatchThread = stopwatchThread;
+    }
+
+    private void handleStopwatchOnGameState() {
+        if (Objects.nonNull(stopwatchThread)) {
+            MinesweeperField.GameStatus gameStatus = checkGameStatus();
+            if (gameStatus == MinesweeperField.GameStatus.gameWon || gameStatus == MinesweeperField.GameStatus.gameOver) {
+                stopwatchThread.interrupt();
+            }
+        }
     }
 
     private MineButton[][] setUpField(int numOfRows, int numOfColumns) {
@@ -191,6 +208,7 @@ public class MinesweeperField implements Interactable {
 
 
     public void resetBoard() {
+        stopwatchThread.interrupt();
         firstClick = true;
         gameOverClick = false;
         currentMines = new ArrayList<>();
@@ -201,6 +219,7 @@ public class MinesweeperField implements Interactable {
                 mine.resetState();
             }
         }
+        stopwatchThread = new Thread(stopwatchThread);
     }
 
 

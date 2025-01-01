@@ -20,6 +20,10 @@ public class MinesweeperPanel extends ViewPanel {
         victoryText = new TextPanel(0,0, 100, 35, "Game Won!");
     }
 
+    public void addStopwatch(Thread stopwatchThread) {
+        gameField.addStopwatch(stopwatchThread);
+    }
+
     public void onLeftClick(int x, int y) {
         gameField.onLeftClick(x, y);
         resetButton.onLeftClick(x, y);
