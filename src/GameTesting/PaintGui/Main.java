@@ -1,4 +1,4 @@
-package GameTesting.AdvancedGui;
+package GameTesting.PaintGui;
 
 public class Main {
 

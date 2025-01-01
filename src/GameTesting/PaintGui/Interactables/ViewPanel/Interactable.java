@@ -1,4 +1,4 @@
-package GameTesting.AdvancedGui.Interactables.ViewPanel;
+package GameTesting.PaintGui.Interactables.ViewPanel;
 
 public interface Interactable {
 

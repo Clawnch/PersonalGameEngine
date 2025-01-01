@@ -1,8 +1,8 @@
-package GameTesting.AdvancedGui.Interactables.MinesweeperAssets;
+package GameTesting.PaintGui.Interactables.MinesweeperAssets;
 
-import GameTesting.AdvancedGui.Interactables.ViewPanel.Button;
-import GameTesting.AdvancedGui.Interactables.ViewPanel.Interactable;
-import GameTesting.AdvancedGui.Interactables.ViewPanel.ViewPanelHelper;
+import GameTesting.PaintGui.Interactables.ViewPanel.Button;
+import GameTesting.PaintGui.Interactables.ViewPanel.Interactable;
+import GameTesting.PaintGui.Interactables.ViewPanel.ViewPanelHelper;
 
 public class GameStartButton extends Button implements Interactable {
 

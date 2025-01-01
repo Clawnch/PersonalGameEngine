@@ -1,6 +1,6 @@
-package GameTesting.AdvancedGui.Input;
+package GameTesting.PaintGui.Input;
 
-import GameTesting.AdvancedGui.Interactables.ViewPanel.ViewPanel;
+import GameTesting.PaintGui.Interactables.ViewPanel.ViewPanel;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;

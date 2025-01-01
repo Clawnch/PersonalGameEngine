@@ -1,6 +1,7 @@
-package GameTesting.AdvancedGui.Events;
+package GameTesting.PaintGui.Events;
 
-import GameTesting.AdvancedGui.Interactables.ViewPanel.TextPanel;
+
+import GameTesting.PaintGui.Interactables.ViewPanel.TextPanel;
 
 import javax.swing.*;
 

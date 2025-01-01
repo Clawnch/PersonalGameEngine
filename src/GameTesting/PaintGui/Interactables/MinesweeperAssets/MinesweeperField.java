@@ -1,7 +1,7 @@
-package GameTesting.AdvancedGui.Interactables.MinesweeperAssets;
+package GameTesting.PaintGui.Interactables.MinesweeperAssets;
 
-import GameTesting.AdvancedGui.Interactables.ViewPanel.Interactable;
-import GameTesting.AdvancedGui.Interactables.ViewPanel.ViewPanelHelper;
+import GameTesting.PaintGui.Interactables.ViewPanel.Interactable;
+import GameTesting.PaintGui.Interactables.ViewPanel.ViewPanelHelper;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -196,7 +196,7 @@ public class MinesweeperField implements Interactable {
         return checkVictoryCondition();
     }
 
-    public GameStatus checkVictoryCondition() {
+    private GameStatus checkVictoryCondition() {
         boolean passedCheck = true;
         for (MineButton mine : nonMineTiles) {
             if (mine.getState() != MineButton.buttonState.number) {

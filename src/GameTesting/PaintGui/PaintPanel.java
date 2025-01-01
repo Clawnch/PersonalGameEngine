@@ -1,11 +1,10 @@
-package GameTesting.AdvancedGui;
+package GameTesting.PaintGui;
 
-import GameTesting.AdvancedGui.Events.Stopwatch;
-import GameTesting.AdvancedGui.Input.Mouse;
-import GameTesting.AdvancedGui.Interactables.MinesweeperAssets.MinesweeperPanel;
-import GameTesting.AdvancedGui.Interactables.ViewPanel.TextPanel;
-import GameTesting.AdvancedGui.Interactables.ViewPanel.ViewPanel;
-
+import GameTesting.PaintGui.Events.Stopwatch;
+import GameTesting.PaintGui.Input.Mouse;
+import GameTesting.PaintGui.Interactables.MinesweeperAssets.MinesweeperPanel;
+import GameTesting.PaintGui.Interactables.ViewPanel.TextPanel;
+import GameTesting.PaintGui.Interactables.ViewPanel.ViewPanel;
 import javax.swing.*;
 import java.awt.*;
 
