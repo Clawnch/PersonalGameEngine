@@ -3,7 +3,8 @@ package GameTesting.AdvancedGui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.util.Objects;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 public class Main extends Canvas implements Runnable {
 
@@ -15,6 +16,10 @@ public class Main extends Canvas implements Runnable {
     private boolean running = false;
     private final boolean resizable = false;
     private static final String gameTitle = "Game";
+    private BufferedImage image;
+    private int[] pixels;
+
+    private Screen screen;
 
     private JFrame frame;
     private Thread gameThread;
@@ -36,6 +41,12 @@ public class Main extends Canvas implements Runnable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
+        createBufferStrategy(3);
+
+        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+        screen = new Screen(width, height);
+
         start();
     }
 
@@ -53,19 +64,19 @@ public class Main extends Canvas implements Runnable {
 
     private void render() {
         BufferStrategy strategy = getBufferStrategy();
-        if (Objects.isNull(strategy)) {
-            createBufferStrategy(3);
-            return;
-        }
 
         Graphics g = strategy.getDrawGraphics();
+        
+        screen.render();
 
-        g.setColor(Color.GREEN);
-        g.drawRect(0,0, getWidth(), getHeight());
+        for (int i = 0; i < pixels.length; i++) {
+            pixels[i] = screen.getPixels()[i];
+        }
 
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
-        strategy.show();
         g.dispose();
+        strategy.show();
     }
 
     public synchronized void start() {
