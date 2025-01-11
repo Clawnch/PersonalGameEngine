@@ -24,6 +24,10 @@ public class Main extends Canvas implements Runnable {
     private JFrame frame;
     private Thread gameThread;
 
+    private long lastUpdate = 0L, lastRender = 0L;
+    private static float upsLimit = 1.2f;
+    private static int fpsLimit = 120;
+
     public static void main(String[] args) {
         Main main = new Main();
 
@@ -47,6 +51,9 @@ public class Main extends Canvas implements Runnable {
         pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
         screen = new Screen(width, height);
 
+        lastUpdate = System.currentTimeMillis();
+        lastRender = System.currentTimeMillis();
+
         start();
     }
 
@@ -54,12 +61,21 @@ public class Main extends Canvas implements Runnable {
     @Override
     public synchronized void run() {
         while (running) {
-            render();
+
+            long currentTime = System.currentTimeMillis();
+            if ((currentTime - lastUpdate) >= (1000 * upsLimit)) {
+                update();
+                lastUpdate = currentTime;
+            }
+            if ((currentTime - lastRender) >= (1000 / fpsLimit)) {
+                render();
+                lastRender = currentTime;
+            }
         }
     }
 
     private void update() {
-
+            screen.update();
     }
 
     private void render() {
