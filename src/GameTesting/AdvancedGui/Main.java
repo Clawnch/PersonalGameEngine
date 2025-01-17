@@ -1,5 +1,7 @@
 package GameTesting.AdvancedGui;
 
+import GameTesting.AdvancedGui.PongGame.Pong;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -8,7 +10,7 @@ import java.awt.image.DataBufferInt;
 
 public class Main extends Canvas implements Runnable {
 
-    public static int width = 512;
+    public static int width = 768;
     public static int height = width / 16 * 9;
 
     public static int scale = 1;
@@ -19,14 +21,16 @@ public class Main extends Canvas implements Runnable {
     private BufferedImage image;
     private int[] pixels;
 
-    private Screen screen;
+    //private Screen screen;
 
     private JFrame frame;
     private Thread gameThread;
 
     private long lastUpdate = 0L, lastRender = 0L;
-    private static float upsLimit = 1.2f;
+    private static float upsLimit = .1f;
     private static int fpsLimit = 120;
+
+    private Pong pong;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -49,7 +53,9 @@ public class Main extends Canvas implements Runnable {
 
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
-        screen = new Screen(width, height);
+        //screen = new Screen(width, height);
+
+        pong = new Pong(getWidth(), getHeight());
 
         lastUpdate = System.currentTimeMillis();
         lastRender = System.currentTimeMillis();
@@ -75,7 +81,7 @@ public class Main extends Canvas implements Runnable {
     }
 
     private void update() {
-            screen.update();
+        pong.update();
     }
 
     private void render() {
@@ -83,11 +89,13 @@ public class Main extends Canvas implements Runnable {
 
         Graphics g = strategy.getDrawGraphics();
         
-        screen.render();
+//        screen.render();
+//
+//        for (int i = 0; i < pixels.length; i++) {
+//            pixels[i] = screen.getPixels()[i];
+//        }
+        pong.render(pixels);
 
-        for (int i = 0; i < pixels.length; i++) {
-            pixels[i] = screen.getPixels()[i];
-        }
 
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
