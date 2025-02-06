@@ -27,7 +27,6 @@ public class Pong extends Drawable implements GameComponent {
 
     @Override
     public void update() {
-        System.out.println("Pong update");
         ball.update();
     }
 }

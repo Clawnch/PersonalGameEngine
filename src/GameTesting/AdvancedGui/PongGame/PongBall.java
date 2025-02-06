@@ -14,9 +14,9 @@ public class PongBall extends Drawable implements GameComponent {
     private Point position;
 
     private int moveDir = 45;
-    private int speed = 10;
+    private int speed = 3;
 
-    private Rectangle bounds;
+    private Rectangle bounds, collisionBox;
 
     private final double radianToDegreeRatio = 57.2958;
 
@@ -26,6 +26,7 @@ public class PongBall extends Drawable implements GameComponent {
         position = new Point(initX, initY);
         pixels = new int[height * width];
         this.bounds = bounds;
+        this.collisionBox = new Rectangle(position, width, height);
 
         Arrays.fill(pixels, 0xDDFFDD);
     }
@@ -39,8 +40,7 @@ public class PongBall extends Drawable implements GameComponent {
         int updatedY = (int)distanceNS + position.getY();
         Point updatedPos = new Point(updatedX, updatedY);
 
-        System.out.println(updatedPos);
-        if (bounds.isInArea(updatedPos)) {
+        if (CollisionHelper.isInArea(bounds, updatedPos)) {
             position = updatedPos;
         }
 

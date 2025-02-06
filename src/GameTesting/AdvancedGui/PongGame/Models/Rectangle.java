@@ -15,13 +15,9 @@ public class Rectangle {
         return point;
     }
 
-    public boolean isInArea(Point point) {
-        int x1 = point.getX(), y1 = point.getY();
-        int x2 = this.point.getX(), y2 = this.point.getY();
-        boolean xComp = x1 >= x2 && x1 < x2 + width;
-        boolean yComp = y1 >= y2 && y1 < y2 + height;
-
-        return xComp && yComp;
+    public void updatePoint(Point newPoint) {
+        this.point.setX(newPoint.getX());
+        this.point.setY(newPoint.getY());
     }
 
     public int getWidth() {
