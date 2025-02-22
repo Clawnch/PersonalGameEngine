@@ -27,7 +27,7 @@ public class Main extends Canvas implements Runnable {
     private Thread gameThread;
 
     private long lastUpdate = 0L, lastRender = 0L;
-    private static float upsLimit = .1f;
+    private static float upsLimit = 1f / 30;
     private static int fpsLimit = 120;
 
     private Pong pong;
