@@ -4,6 +4,9 @@ import GameTesting.AdvancedGui.PongGame.Models.Pair;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
 import GameTesting.AdvancedGui.PongGame.Models.Rectangle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CollisionHelper {
 
     public static boolean isOverlapping(Rectangle area1, Rectangle area2) {
@@ -58,6 +61,32 @@ public class CollisionHelper {
         boolean overlap2 = x2 >= y1 && x2 <= y2;
 
         return overlap2 || overlap;
+    }
+
+
+    /**
+     *
+     * @param boundary Larger rectangle, the area you are testing if the object is in
+     * @param object Smaller rectangle, the item you are testing if it is in the larger rectangle
+     * @return true if any of the object is outside the boundary
+     */
+    public static boolean isOutsideArea(Rectangle boundary, Rectangle object) {
+        List<Point> objectCorners = new ArrayList<>();
+        Point origin, east, south, far;
+        origin = object.getPoint();
+        east = new Point(origin.getX() + object.getWidth(), origin.getY());
+        south = new Point(origin.getX(), origin.getY() + object.getHeight());
+        far = new Point(east.getX(), south.getY());
+
+        objectCorners.add(origin);
+        objectCorners.add(east);
+        objectCorners.add(south);
+        objectCorners.add(far);
+
+        for (Point p : objectCorners) {
+            if (!isInArea(boundary, p)) return true;
+        }
+        return false;
     }
 
 
