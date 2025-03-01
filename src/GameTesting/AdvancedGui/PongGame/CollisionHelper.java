@@ -1,5 +1,6 @@
 package GameTesting.AdvancedGui.PongGame;
 
+import GameTesting.AdvancedGui.PongGame.Models.Pair;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
 import GameTesting.AdvancedGui.PongGame.Models.Rectangle;
 
@@ -22,6 +23,41 @@ public class CollisionHelper {
         boolean yOverlap = verticalCheck || heightCheck;
 
         return xOverlap && yOverlap;
+    }
+
+    public static boolean isOverlappingV2(Rectangle rect1, Rectangle rect2) {
+        Point rect1Start = rect1.getPoint(), rect2Start = rect2.getPoint();
+        Pair<Integer> rect1XPair = new Pair<>(rect1Start.getX(), rect1Start.getX() + rect1.getWidth());
+        Pair<Integer> rect2XPair = new Pair<>(rect2Start.getX(), rect2Start.getX() + rect2.getWidth());
+
+        boolean overlappingX = isOverlappingSegment(rect1XPair, rect2XPair);
+
+        Pair<Integer> rect1YPair = new Pair<>(rect1Start.getY(), rect1Start.getY() + rect1.getHeight());
+        Pair<Integer> rect2YPair = new Pair<>(rect2Start.getY(), rect2Start.getY() + rect2.getHeight());
+
+        boolean overlappingY = isOverlappingSegment(rect1YPair, rect2YPair);
+
+        return overlappingY && overlappingX;
+    }
+
+    private static boolean isOverlappingSegment(Pair<Integer> pair1, Pair<Integer> pair2) {
+        Pair<Integer> longestSegment, shortestSegment;
+        int p1Length = pair1.getSecond() - pair1.getFirst();
+        int p2Length = pair2.getSecond() - pair2.getFirst();
+
+        longestSegment = (p1Length >= p2Length) ? pair1 : pair2;
+        shortestSegment = (p1Length >= p2Length) ? pair2 : pair1;
+
+        int x1 = shortestSegment.getFirst();
+        int x2 = shortestSegment.getSecond();
+
+        int y1 = longestSegment.getFirst();
+        int y2 = longestSegment.getSecond();
+
+        boolean overlap = x1 >= y1 && x1 <= y2;
+        boolean overlap2 = x2 >= y1 && x2 <= y2;
+
+        return overlap2 || overlap;
     }
 
 

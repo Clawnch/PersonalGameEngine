@@ -41,7 +41,7 @@ public class PongBall extends Drawable implements GameComponent {
         Point updatedPos = new Point(updatedX, updatedY);
         Rectangle updatedRect = new Rectangle(updatedPos, width, height);
 
-        if (!CollisionHelper.isOverlapping(bounds, updatedRect)) {
+        if (CollisionHelper.isOverlappingV2(bounds, updatedRect)) {
             position = updatedPos;
         }
 
