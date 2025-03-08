@@ -2,14 +2,12 @@ package GameTesting.AdvancedGui.PongGame;
 
 import GameTesting.AdvancedGui.Components.Drawable;
 import GameTesting.AdvancedGui.Components.GameComponent;
-import GameTesting.AdvancedGui.Components.Updatable;
+import GameTesting.AdvancedGui.Console.Debug;
 import GameTesting.AdvancedGui.Main;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
 import GameTesting.AdvancedGui.PongGame.Models.Rectangle;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class PongBall extends Drawable implements GameComponent {
 
@@ -27,7 +25,7 @@ public class PongBall extends Drawable implements GameComponent {
 
     private Rectangle bounds, collisionBox;
 
-    private final double radianToDegreeRatio = 57.2958;
+    public static final double radianToDegreeRatio = 57.2958;
 
     public PongBall(int initX, int initY, Rectangle bounds) {
         height = 16;
@@ -101,10 +99,7 @@ public class PongBall extends Drawable implements GameComponent {
         update();
     }
 
-    /**
-     * Helper method to change movement angle fixed to options of 45 degrees
-     * @param updatedRect Used to determine side of collision
-     */
+    @Deprecated
     private void updateAngleFixed45(Rectangle updatedRect) {
         Side side = getCollisionSide(bounds, updatedRect);
         if (side.equals(Side.bottom)) {
@@ -156,6 +151,39 @@ public class PongBall extends Drawable implements GameComponent {
         return position.getY();
     }
 
+    public Point getCenter() {
+        int x = getX() + (width / 2);
+        int  y = getY() + (height / 2);
+        return new Point(x,  y);
+    }
+
+    public void adjustDirFromGravity(double directionToGravity, double distance) {
+        int diffSub = 0;
+        int diffAdd = 0;
+
+        for (int add = (int)directionToGravity; !withinRange(moveDir, add, 5); add++) {
+            if (add > 360) add -= 360;
+            diffAdd++;
+        }
+        for (int sub = (int)directionToGravity; !withinRange(moveDir, sub, 5); sub--) {
+            if (sub < 0) sub += 360;
+            diffSub++;
+        }
+
+        if (diffSub < diffAdd) {
+            moveDir += 5;
+            if (moveDir >= 360) moveDir -= 360;
+        } else {
+            moveDir -= 5;
+            if (moveDir <= 0) moveDir += 360;
+        }
+
+    }
+
+    private boolean withinRange(int baseValue, int checkedValue, int range) {
+        return Math.abs(baseValue - checkedValue) <= range;
+    }
+
     @Override
     public void render(int[] pixels) {
         for (int y = this.getY(); y < height + this.getY(); y++) {
@@ -163,5 +191,16 @@ public class PongBall extends Drawable implements GameComponent {
                 pixels[x + (y * Main.width)] = 0xDDFFDD;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "PongBall{" +
+                "position=" + position +
+                ", moveDir=" + moveDir +
+                ", speed=" + speed +
+                ", bounds=" + bounds +
+                ", collisionBox=" + collisionBox +
+                '}';
     }
 }

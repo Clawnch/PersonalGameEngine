@@ -10,6 +10,7 @@ public class Pong extends Drawable implements GameComponent {
 
     private PongBackground background;
     private PongBall ball;
+    private GravityController gravityController;
 
     public Pong(int width, int height) {
         this.width = width;
@@ -17,6 +18,8 @@ public class Pong extends Drawable implements GameComponent {
         this.pixels = new int[width * height];
         background = new PongBackground(width, height);
         ball = new PongBall(width/2, height/2, new Rectangle(new Point(0, 0), width, height));
+        gravityController = new GravityController(ball);
+        Main.getMouse().addLeftClickAction(gravityController);
     }
 
     @Override
@@ -27,6 +30,7 @@ public class Pong extends Drawable implements GameComponent {
 
     @Override
     public void update() {
+        gravityController.update();
         ball.update();
     }
 }

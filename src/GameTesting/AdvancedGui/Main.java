@@ -1,5 +1,6 @@
 package GameTesting.AdvancedGui;
 
+import GameTesting.AdvancedGui.Controllers.Mouse;
 import GameTesting.AdvancedGui.PongGame.Pong;
 
 import javax.swing.*;
@@ -31,6 +32,7 @@ public class Main extends Canvas implements Runnable {
     private static int fpsLimit = 120;
 
     private Pong pong;
+    private static Mouse mouse;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -53,6 +55,9 @@ public class Main extends Canvas implements Runnable {
 
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+
+        mouse = new Mouse();
+        addMouseListener(mouse);
         //screen = new Screen(width, height);
 
         pong = new Pong(getWidth(), getHeight());
@@ -116,6 +121,10 @@ public class Main extends Canvas implements Runnable {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Mouse getMouse() {
+        return mouse;
     }
 
 
