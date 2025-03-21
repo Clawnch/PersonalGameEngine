@@ -4,7 +4,10 @@ package GameTesting.AdvancedGui.PongGame;
 import GameTesting.AdvancedGui.Components.Updatable;
 import GameTesting.AdvancedGui.Console.Debug;
 import GameTesting.AdvancedGui.Controllers.MouseInteractable;
+import GameTesting.AdvancedGui.PongGame.Models.Particles.Particle;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
+
+import java.util.List;
 
 public class GravityController implements MouseInteractable, Updatable {
 
@@ -43,6 +46,15 @@ public class GravityController implements MouseInteractable, Updatable {
             double degrees = getAdjustedDegrees();
             ball.adjustDirFromGravity(degrees, 0);
         }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Point getGravityPoint() {
+        if (active) return gravityPoint;
+        return null;
     }
 
     private enum Direction {

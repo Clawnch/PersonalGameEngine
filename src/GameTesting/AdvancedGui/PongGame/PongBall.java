@@ -2,7 +2,6 @@ package GameTesting.AdvancedGui.PongGame;
 
 import GameTesting.AdvancedGui.Components.Drawable;
 import GameTesting.AdvancedGui.Components.GameComponent;
-import GameTesting.AdvancedGui.Console.Debug;
 import GameTesting.AdvancedGui.Main;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
 import GameTesting.AdvancedGui.PongGame.Models.Rectangle;
@@ -51,12 +50,12 @@ public class PongBall extends Drawable implements GameComponent {
         if (!CollisionHelper.isOutsideArea(bounds, updatedRect)) {
             position = updatedPos;
         } else {
-            updateAngle(updatedRect);
+            updateAngleOnCollision(updatedRect);
         }
 
     }
 
-    private void updateAngle(Rectangle updatedRect) {
+    private void updateAngleOnCollision(Rectangle updatedRect) {
         Side side = getCollisionSide(bounds, updatedRect);
         if (side.equals(Side.bottom)) {
             if (moveDir < 90) {
@@ -98,26 +97,6 @@ public class PongBall extends Drawable implements GameComponent {
         }
         update();
     }
-
-    @Deprecated
-    private void updateAngleFixed45(Rectangle updatedRect) {
-        Side side = getCollisionSide(bounds, updatedRect);
-        if (side.equals(Side.bottom)) {
-            if (moveDir == 45) moveDir = 315;
-            if (moveDir == 135) moveDir = 225;
-        } else if (side.equals(Side.right)) {
-            if (moveDir == 45) moveDir = 135;
-            if (moveDir == 315) moveDir = 225;
-        } else if (side.equals(Side.left)) {
-            if (moveDir == 225) moveDir = 315;
-            if (moveDir == 135) moveDir = 45;
-        } else if (side.equals(Side.top)) {
-            if (moveDir == 225) moveDir = 135;
-            if (moveDir == 315) moveDir = 45;
-        }
-        update();
-    }
-
 
     public Side getCollisionSide(Rectangle boundary, Rectangle object) {
         Point origin, east, south, far;
