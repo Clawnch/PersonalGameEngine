@@ -3,13 +3,18 @@ package GameTesting.AdvancedGui.PongGame.Models.Particles;
 import GameTesting.AdvancedGui.Components.Drawable;
 import GameTesting.AdvancedGui.Components.GameComponent;
 import GameTesting.AdvancedGui.Main;
+import GameTesting.AdvancedGui.PongGame.Models.ActivePoint;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
 
+import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
+import static GameTesting.AdvancedGui.PongGame.PongBall.radianToDegreeRatio;
 
 public class Particle extends Drawable implements GameComponent {
 
-    class ParticleFactory {
+    public static class ParticleFactory {
 
         private Particle particle;
 
@@ -30,13 +35,18 @@ public class Particle extends Drawable implements GameComponent {
             return this;
         }
 
-        public ParticleFactory setBehavior(BiConsumer<Particle, Point> behavior) {
+        public ParticleFactory setBehavior(BiConsumer<Particle, ActivePoint> behavior) {
             particle.behavior = behavior;
             return this;
         }
 
         public ParticleFactory setDuration(int maxUpdates) {
             particle.maxUpdates = maxUpdates;
+            return this;
+        }
+
+        public ParticleFactory setGravityPoint(ActivePoint gravityPoint) {
+            particle.gravityPoint = gravityPoint;
             return this;
         }
 
@@ -55,14 +65,41 @@ public class Particle extends Drawable implements GameComponent {
 
      */
 
-    BiConsumer<Particle, Point> behavior;
-    Point position;
+    private BiConsumer<Particle, ActivePoint> behavior;
+    private Point position;
+
+    private ActivePoint gravityPoint;
+
+    private Double moveDir;
 
     boolean isActive = true;
     private int maxUpdates, updatesCompleted = 0;
+    private final int MOVE_SPEED = 5;
 
     private Particle() {
 
+    }
+
+    public Double getMoveDir() {
+        return moveDir;
+    }
+
+    public void setMoveDir(Double moveDir) {
+        if (Objects.isNull(this.moveDir)) {
+            this.moveDir = moveDir;
+        }
+    }
+
+    public Point getCenter() {
+        return new Point(position.getX() + (width / 2), position.getY() + (height / 2));
+    }
+
+    public void moveParticle() {
+        double distanceEW = Math.cos(moveDir / radianToDegreeRatio) * MOVE_SPEED;
+        double distanceNS = Math.sin(moveDir / radianToDegreeRatio) * MOVE_SPEED;
+        int updatedX = (int)distanceEW + position.getX();
+        int updatedY = (int)distanceNS + position.getY();
+        position = new Point(updatedX, updatedY);
     }
 
     @Override
@@ -70,19 +107,37 @@ public class Particle extends Drawable implements GameComponent {
         if (isActive) {
             for (int y = position.getY(); y < height + position.getY(); y++) {
                 for (int x = position.getX(); x < width + position.getX(); x++) {
-                    pixels[x + (y * Main.width)] = 0x11FFDD;
+                    int index = x + (y * Main.width);
+                    if (isOnScreen(x, y) && index > 0 && index < pixels.length) pixels[index] = 0x11FFDD;
                 }
             }
         }
     }
 
+    private boolean isOnScreen(int x, int y) {
+        return x > 0 && y > 0 && x < Main.width && y < Main.width;
+    }
+
     @Override
     public void update() {
-        if (isActive) behavior.accept(this, position);
+        if (isActive) {
+            behavior.accept(this, gravityPoint);
+            updatesCompleted++;
+        }
         if (updatesCompleted >= maxUpdates) isActive = false;
     }
 
     public boolean isActive() {
         return isActive;
+    }
+
+    @Override
+    public String toString() {
+        return "Particle{" +
+                "position=" + position +
+                ", gravityPoint=" + gravityPoint +
+                ", moveDir=" + moveDir +
+                ", isActive=" + isActive +
+                '}';
     }
 }
