@@ -42,7 +42,6 @@ public class Pong extends Drawable implements GameComponent {
     @Override
     public void update() {
         gravityController.update();
-        Debug.printMessageToConsole(this, particleList + "");
         for (Particle p : particleList) {
             p.update();
         }

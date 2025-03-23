@@ -1,6 +1,7 @@
 package GameTesting.AdvancedGui;
 
 import GameTesting.AdvancedGui.Controllers.Mouse;
+import GameTesting.AdvancedGui.PongGame.HelperClasses.RenderHelper;
 import GameTesting.AdvancedGui.PongGame.Pong;
 
 import javax.swing.*;
@@ -64,6 +65,8 @@ public class Main extends Canvas implements Runnable {
 
         lastUpdate = System.currentTimeMillis();
         lastRender = System.currentTimeMillis();
+
+        RenderHelper.setPixels(pixels);
 
         start();
     }

@@ -3,14 +3,14 @@ package GameTesting.AdvancedGui.PongGame.Models.Particles;
 import GameTesting.AdvancedGui.Components.Drawable;
 import GameTesting.AdvancedGui.Components.GameComponent;
 import GameTesting.AdvancedGui.Main;
+import GameTesting.AdvancedGui.PongGame.HelperClasses.MovementHelper;
+import GameTesting.AdvancedGui.PongGame.HelperClasses.RenderHelper;
 import GameTesting.AdvancedGui.PongGame.Models.ActivePoint;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
-import static GameTesting.AdvancedGui.PongGame.PongBall.radianToDegreeRatio;
 
 public class Particle extends Drawable implements GameComponent {
 
@@ -18,14 +18,12 @@ public class Particle extends Drawable implements GameComponent {
 
         private Particle particle;
 
-        public ParticleFactory generateParticle() {
+        public ParticleFactory() {
             particle = new Particle();
-            return this;
         }
 
         public ParticleFactory setStartingPoint(Point p) {
             particle.position = p;
-
             return this;
         }
 
@@ -50,8 +48,27 @@ public class Particle extends Drawable implements GameComponent {
             return this;
         }
 
+        /**
+         * Provides created particle, verifies that all properties have been initialized
+         * if any property has not been set, returns inactive particle
+         * @return created particle or inactive particle if property not set
+         */
         public Particle returnParticle() {
+            if (!verifyParticle()) {
+                particle = new Particle();
+                particle.isActive = false;
+            }
             return particle;
+        }
+
+        private boolean verifyParticle() {
+            return Objects.nonNull(particle) &&
+                    Objects.nonNull(particle.position) &&
+                    Objects.nonNull(particle.gravityPoint) &&
+                    Objects.nonNull(particle.behavior) &&
+                    particle.maxUpdates != 0 &&
+                    particle.width != 0 &&
+                    particle.height != 0;
         }
     }
 
@@ -66,7 +83,6 @@ public class Particle extends Drawable implements GameComponent {
      */
 
     private BiConsumer<Particle, ActivePoint> behavior;
-    private Point position;
 
     private ActivePoint gravityPoint;
 
@@ -95,27 +111,14 @@ public class Particle extends Drawable implements GameComponent {
     }
 
     public void moveParticle() {
-        double distanceEW = Math.cos(moveDir / radianToDegreeRatio) * MOVE_SPEED;
-        double distanceNS = Math.sin(moveDir / radianToDegreeRatio) * MOVE_SPEED;
-        int updatedX = (int)distanceEW + position.getX();
-        int updatedY = (int)distanceNS + position.getY();
-        position = new Point(updatedX, updatedY);
+        position = MovementHelper.getPointFromDirAndSpeed(moveDir, MOVE_SPEED, position);
     }
 
     @Override
     public void render(int[] pixels) {
         if (isActive) {
-            for (int y = position.getY(); y < height + position.getY(); y++) {
-                for (int x = position.getX(); x < width + position.getX(); x++) {
-                    int index = x + (y * Main.width);
-                    if (isOnScreen(x, y) && index > 0 && index < pixels.length) pixels[index] = 0x11FFDD;
-                }
-            }
+            RenderHelper.renderColor(this, 0x11ffDD);
         }
-    }
-
-    private boolean isOnScreen(int x, int y) {
-        return x > 0 && y > 0 && x < Main.width && y < Main.width;
     }
 
     @Override
@@ -123,8 +126,8 @@ public class Particle extends Drawable implements GameComponent {
         if (isActive) {
             behavior.accept(this, gravityPoint);
             updatesCompleted++;
+            if (updatesCompleted >= maxUpdates) isActive = false;
         }
-        if (updatesCompleted >= maxUpdates) isActive = false;
     }
 
     public boolean isActive() {
