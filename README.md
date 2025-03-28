@@ -9,6 +9,7 @@ Intended tasks to complete:
      - Includes some game logic
     
   -- Current Step --
+  
   3. CPU Rendering
      - Move graphics away from built in library to modifying pixels and graphics buffer
      - Allow for sprites and graphics to be included from exernal images rather than generated in code
