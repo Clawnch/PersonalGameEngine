@@ -61,7 +61,7 @@ public class Main extends Canvas implements Runnable {
         addMouseListener(mouse);
         //screen = new Screen(width, height);
 
-        pong = new Pong(getWidth(), getHeight());
+        pong = new Pong();
 
         lastUpdate = System.currentTimeMillis();
         lastRender = System.currentTimeMillis();
@@ -96,14 +96,8 @@ public class Main extends Canvas implements Runnable {
         BufferStrategy strategy = getBufferStrategy();
 
         Graphics g = strategy.getDrawGraphics();
-        
-//        screen.render();
-//
-//        for (int i = 0; i < pixels.length; i++) {
-//            pixels[i] = screen.getPixels()[i];
-//        }
-        pong.render(pixels);
 
+        pong.render();
 
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 

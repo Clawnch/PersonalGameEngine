@@ -25,8 +25,12 @@ public class PongBall extends Drawable implements GameComponent {
         height = 16;
         width = height;
         position = new Point(initX, initY);
-        pixels = new int[height * width];
         this.bounds = bounds;
+    }
+
+    @Override
+    public void render() {
+        RenderHelper.renderColor(this, 0xDDFFDD);
     }
 
     @Override
@@ -148,11 +152,6 @@ public class PongBall extends Drawable implements GameComponent {
 
     private boolean withinRange(int baseValue, int checkedValue, int range) {
         return Math.abs(baseValue - checkedValue) <= range;
-    }
-
-    @Override
-    public void render(int[] pixels) {
-        RenderHelper.renderColor(this, 0xDDFFDD);
     }
 
     @Override

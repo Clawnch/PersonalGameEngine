@@ -6,11 +6,6 @@ public abstract class Drawable {
 
     protected int width, height;
     protected Point position;
-    protected int[] pixels;
-
-    public int[] getPixels() {
-        return pixels;
-    }
 
     public int getWidth() {
         return width;

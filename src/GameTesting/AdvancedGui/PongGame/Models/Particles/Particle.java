@@ -115,7 +115,7 @@ public class Particle extends Drawable implements GameComponent {
     }
 
     @Override
-    public void render(int[] pixels) {
+    public void render() {
         if (isActive) {
             RenderHelper.renderColor(this, 0x11ffDD);
         }

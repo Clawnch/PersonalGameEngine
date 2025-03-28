@@ -12,17 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Pong extends Drawable implements GameComponent {
+public class Pong implements GameComponent {
 
     private PongBackground background;
     private PongBall ball;
     private GravityController gravityController;
     private List<Particle> particleList;
 
-    public Pong(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.pixels = new int[width * height];
+    public Pong() {
+        int width = Main.width;
+        int height = Main.height;
         particleList = new ArrayList<>();
         background = new PongBackground(width, height);
         ball = new PongBall(width/2, height/2, new Rectangle(new Point(0, 0), width, height));
@@ -31,12 +30,12 @@ public class Pong extends Drawable implements GameComponent {
     }
 
     @Override
-    public void render(int[] pixels) {
-        background.render(pixels);
+    public void render() {
+        background.render();
         for (Particle p : particleList) {
-            p.render(pixels);
+            p.render();
         }
-        ball.render(pixels);
+        ball.render();
     }
 
     @Override
