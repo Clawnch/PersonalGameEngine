@@ -1,11 +1,15 @@
 package GameTesting.AdvancedGui.PongGame;
 
+import GameTesting.AdvancedGui.Components.CollisionArea;
 import GameTesting.AdvancedGui.Components.Drawable;
 import GameTesting.AdvancedGui.Components.GameComponent;
+import GameTesting.AdvancedGui.Console.Debug;
 import GameTesting.AdvancedGui.PongGame.HelperClasses.MovementHelper;
 import GameTesting.AdvancedGui.PongGame.HelperClasses.RenderHelper;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
 import GameTesting.AdvancedGui.PongGame.Models.Rectangle;
+
+import java.util.Objects;
 
 public class PongBall extends Drawable implements GameComponent {
 
@@ -18,14 +22,13 @@ public class PongBall extends Drawable implements GameComponent {
 
     private int moveDir = 45;
     private int speed = 3;
+    private int rotationSpeed = 3;
 
-    private Rectangle bounds;
 
     public PongBall(int initX, int initY, Rectangle bounds) {
         height = 16;
         width = height;
         position = new Point(initX, initY);
-        this.bounds = bounds;
     }
 
     @Override
@@ -36,18 +39,23 @@ public class PongBall extends Drawable implements GameComponent {
     @Override
     public void update() {
         Point updatedPos = MovementHelper.getPointFromDirAndSpeed(moveDir, speed, position);
-        Rectangle updatedRect = new Rectangle(updatedPos, width, height);
+        Rectangle predictedArea = new Rectangle(updatedPos, width, height);
 
-        if (!CollisionHelper.isOutsideArea(bounds, updatedRect)) {
+        CollisionArea collidingWall = Pong.getWalls().stream()
+                .filter(area -> CollisionHelper.isOverlapping(predictedArea, area.getArea()))
+                .findFirst()
+                .orElse(null);
+
+        if (Objects.isNull(collidingWall)) {
             position = updatedPos;
         } else {
-            updateAngleOnCollision(updatedRect);
+            updateAngleOnCollision(predictedArea, collidingWall);
         }
 
     }
 
-    private void updateAngleOnCollision(Rectangle updatedRect) {
-        Side side = getCollisionSide(bounds, updatedRect);
+    private void updateAngleOnCollision(Rectangle predictedArea, CollisionArea collidingWall) {
+        Side side = getCollisionSide(collidingWall, predictedArea);
         if (side.equals(Side.bottom)) {
             if (moveDir < 90) {
                 moveDir = 360 - moveDir;
@@ -89,17 +97,17 @@ public class PongBall extends Drawable implements GameComponent {
         update();
     }
 
-    public Side getCollisionSide(Rectangle boundary, Rectangle object) {
+    public Side getCollisionSide(CollisionArea collidingWall, Rectangle predictedArea) {
         Point origin, east, south, far;
-        origin = object.getPoint();
-        east = new Point(origin.getX() + object.getWidth(), origin.getY());
-        south = new Point(origin.getX(), origin.getY() + object.getHeight());
+        origin = predictedArea.getPoint();
+        east = new Point(origin.getX() + predictedArea.getWidth(), origin.getY());
+        south = new Point(origin.getX(), origin.getY() + predictedArea.getHeight());
         far = new Point(east.getX(), south.getY());
 
-        boolean topL = !CollisionHelper.isInArea(boundary, origin);
-        boolean topR = !CollisionHelper.isInArea(boundary, east);
-        boolean botL = !CollisionHelper.isInArea(boundary, south);
-        boolean botR = !CollisionHelper.isInArea(boundary, far);
+        boolean topL = CollisionHelper.pointIsInArea(collidingWall, origin);
+        boolean topR = CollisionHelper.pointIsInArea(collidingWall, east);
+        boolean botL = CollisionHelper.pointIsInArea(collidingWall, south);
+        boolean botR = CollisionHelper.pointIsInArea(collidingWall, far);
 
         if (topL && topR) {
             return Side.top;
@@ -113,17 +121,9 @@ public class PongBall extends Drawable implements GameComponent {
         return Side.bottom;
     }
 
-    public int getX() {
-        return position.getX();
-    }
-
-    public int getY() {
-        return position.getY();
-    }
-
     public Point getCenter() {
-        int x = getX() + (width / 2);
-        int  y = getY() + (height / 2);
+        int x = position.getX() + (width / 2);
+        int  y = position.getY() + (height / 2);
         return new Point(x,  y);
     }
 
@@ -141,10 +141,10 @@ public class PongBall extends Drawable implements GameComponent {
         }
 
         if (diffSub < diffAdd) {
-            moveDir += 5;
+            moveDir += rotationSpeed;
             if (moveDir >= 360) moveDir -= 360;
         } else {
-            moveDir -= 5;
+            moveDir -= rotationSpeed;
             if (moveDir <= 0) moveDir += 360;
         }
 
@@ -160,7 +160,6 @@ public class PongBall extends Drawable implements GameComponent {
                 "position=" + position +
                 ", moveDir=" + moveDir +
                 ", speed=" + speed +
-                ", bounds=" + bounds +
                 '}';
     }
 }

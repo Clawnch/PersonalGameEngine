@@ -29,8 +29,8 @@ public class Main extends Canvas implements Runnable {
     private Thread gameThread;
 
     private long lastUpdate = 0L, lastRender = 0L;
-    private static float upsLimit = 1f / 30;
-    private static int fpsLimit = 120;
+    private static final float upsLimit = 45;
+    private static final int fpsLimit = 120;
 
     private Pong pong;
     private static Mouse mouse;
@@ -77,7 +77,7 @@ public class Main extends Canvas implements Runnable {
         while (running) {
 
             long currentTime = System.currentTimeMillis();
-            if ((currentTime - lastUpdate) >= (1000 * upsLimit)) {
+            if ((currentTime - lastUpdate) >= (1000 / upsLimit)) {
                 update();
                 lastUpdate = currentTime;
             }
@@ -100,6 +100,7 @@ public class Main extends Canvas implements Runnable {
         pong.render();
 
         g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        g.drawString("", 10, 10);
 
         g.dispose();
         strategy.show();

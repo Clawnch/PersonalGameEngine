@@ -1,5 +1,6 @@
 package GameTesting.AdvancedGui.PongGame;
 
+import GameTesting.AdvancedGui.Components.CollisionArea;
 import GameTesting.AdvancedGui.PongGame.Models.Pair;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
 import GameTesting.AdvancedGui.PongGame.Models.Rectangle;
@@ -9,26 +10,7 @@ import java.util.List;
 
 public class CollisionHelper {
 
-    public static boolean isOverlapping(Rectangle area1, Rectangle area2) {
-        int rect1X = area1.getPoint().getX(), rect1Width = area1.getWidth();
-        int rect1Y = area1.getPoint().getY(), rect1Height = area1.getHeight();
-        int rect2X = area2.getPoint().getX(), rect2Width = area2.getWidth();
-        int rect2Y = area2.getPoint().getY(), rect2Height = area2.getHeight();
-
-        boolean horizontalCheck = rect1X >= rect2X && rect1X <= rect2X + rect2Width;
-        boolean widthCheck = rect1X + rect1Width >= rect2X && rect1X + rect1Width <= rect2X + rect2Width;
-
-        boolean xOverlap = horizontalCheck || widthCheck;
-
-        boolean verticalCheck = rect1Y >= rect2Y && rect1Y <= rect2Y + rect2Height;
-        boolean heightCheck = rect1Y + rect1Height >= rect2Y && rect1Y + rect1Height <= rect2Y + rect2Height;
-
-        boolean yOverlap = verticalCheck || heightCheck;
-
-        return xOverlap && yOverlap;
-    }
-
-    public static boolean isOverlappingV2(Rectangle rect1, Rectangle rect2) {
+    public static boolean isOverlapping(Rectangle rect1, Rectangle rect2) {
         Point rect1Start = rect1.getPoint(), rect2Start = rect2.getPoint();
         Pair<Integer> rect1XPair = new Pair<>(rect1Start.getX(), rect1Start.getX() + rect1.getWidth());
         Pair<Integer> rect2XPair = new Pair<>(rect2Start.getX(), rect2Start.getX() + rect2.getWidth());
@@ -66,11 +48,11 @@ public class CollisionHelper {
 
     /**
      *
-     * @param boundary Larger rectangle, the area you are testing if the object is in
+     * @param collisionArea Larger rectangle, the area you are testing if the object is in
      * @param object Smaller rectangle, the item you are testing if it is in the larger rectangle
      * @return true if any of the object is outside the boundary
      */
-    public static boolean isOutsideArea(Rectangle boundary, Rectangle object) {
+    public static boolean isOutsideArea(CollisionArea collisionArea, Rectangle object) {
         List<Point> objectCorners = new ArrayList<>();
         Point origin, east, south, far;
         origin = object.getPoint();
@@ -84,18 +66,20 @@ public class CollisionHelper {
         objectCorners.add(far);
 
         for (Point p : objectCorners) {
-            if (!isInArea(boundary, p)) return true;
+            if (!pointIsInArea(collisionArea, p)) return true;
         }
         return false;
     }
 
 
-    public static boolean isInArea(Rectangle area, Point point) {
+    public static boolean pointIsInArea(CollisionArea area, Point point) {
         int x1 = point.getX(), y1 = point.getY();
-        int x2 = area.getPoint().getX(), y2 = area.getPoint().getY();
-        boolean xComp = x1 >= x2 && x1 < x2 + area.getWidth();
-        boolean yComp = y1 >= y2 && y1 < y2 + area.getHeight();
+        int x2 = area.getArea().getPoint().getX(), y2 = area.getArea().getPoint().getY();
+        boolean xComp = x1 >= x2 && x1 <= x2 + area.getWidth();
+        boolean yComp = y1 >= y2 && y1 <= y2 + area.getHeight();
 
         return xComp && yComp;
     }
+
+
 }
