@@ -1,13 +1,11 @@
 package GameTesting.AdvancedGui.PongGame;
 
-import GameTesting.AdvancedGui.Components.CollisionArea;
+import GameTesting.AdvancedGui.Console.Debug;
+import GameTesting.AdvancedGui.PongGame.Models.*;
 import GameTesting.AdvancedGui.Components.Drawable;
 import GameTesting.AdvancedGui.Components.GameComponent;
-import GameTesting.AdvancedGui.Console.Debug;
 import GameTesting.AdvancedGui.PongGame.HelperClasses.MovementHelper;
 import GameTesting.AdvancedGui.PongGame.HelperClasses.RenderHelper;
-import GameTesting.AdvancedGui.PongGame.Models.Point;
-import GameTesting.AdvancedGui.PongGame.Models.Rectangle;
 
 import java.util.Objects;
 
@@ -98,16 +96,16 @@ public class PongBall extends Drawable implements GameComponent {
     }
 
     public Side getCollisionSide(CollisionArea collidingWall, Rectangle predictedArea) {
-        Point origin, east, south, far;
-        origin = predictedArea.getPoint();
-        east = new Point(origin.getX() + predictedArea.getWidth(), origin.getY());
-        south = new Point(origin.getX(), origin.getY() + predictedArea.getHeight());
-        far = new Point(east.getX(), south.getY());
+        Point topLeft, topRight, botLeft, botRight;
+        topLeft = predictedArea.getPoint();
+        topRight = new Point(topLeft.getX() + predictedArea.getWidth(), topLeft.getY());
+        botLeft = new Point(topLeft.getX(), topLeft.getY() + predictedArea.getHeight());
+        botRight = new Point(topRight.getX(), botLeft.getY());
 
-        boolean topL = CollisionHelper.pointIsInArea(collidingWall, origin);
-        boolean topR = CollisionHelper.pointIsInArea(collidingWall, east);
-        boolean botL = CollisionHelper.pointIsInArea(collidingWall, south);
-        boolean botR = CollisionHelper.pointIsInArea(collidingWall, far);
+        boolean topL = CollisionHelper.pointIsInArea(collidingWall.getArea(), topLeft);
+        boolean topR = CollisionHelper.pointIsInArea(collidingWall.getArea(), topRight);
+        boolean botL = CollisionHelper.pointIsInArea(collidingWall.getArea(), botLeft);
+        boolean botR = CollisionHelper.pointIsInArea(collidingWall.getArea(), botRight);
 
         if (topL && topR) {
             return Side.top;
@@ -118,7 +116,40 @@ public class PongBall extends Drawable implements GameComponent {
         if (topL && botL) {
             return Side.left;
         }
-        return Side.bottom;
+        if (botL && botR) {
+            return Side.bottom;
+        }
+
+        Point corner =
+                collidingWall.getCollisionPoint(predictedArea);
+
+        if (topL) {
+            int xDiff = Math.abs(topLeft.getX() - corner.getX());
+            int yDiff = Math.abs(topLeft.getY() - corner.getY());
+            if (xDiff >= yDiff) return Side.top;
+            else return Side.left;
+        }
+        if (topR) {
+            int xDiff = Math.abs(topRight.getX() - corner.getX());
+            int yDiff = Math.abs(topRight.getY() - corner.getY());
+            if (xDiff >= yDiff) return Side.top;
+            else return Side.right;
+        }
+        if (botL) {
+            int xDiff = Math.abs(botLeft.getX() - corner.getX());
+            int yDiff = Math.abs(botLeft.getY() - corner.getY());
+            if (xDiff >= yDiff) return Side.bottom;
+            else return Side.left;
+        }
+        if (botR) {
+            int xDiff = Math.abs(botRight.getX() - corner.getX());
+            int yDiff = Math.abs(botRight.getY() - corner.getY());
+            if (xDiff >= yDiff) return Side.bottom;
+            else return Side.right;
+        }
+
+
+        return null;
     }
 
     public Point getCenter() {

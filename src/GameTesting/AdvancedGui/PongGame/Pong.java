@@ -1,10 +1,8 @@
 package GameTesting.AdvancedGui.PongGame;
 
-import GameTesting.AdvancedGui.Components.CollisionArea;
-import GameTesting.AdvancedGui.Components.Drawable;
+import GameTesting.AdvancedGui.PongGame.Models.CollisionArea;
 import GameTesting.AdvancedGui.Components.GameComponent;
 import GameTesting.AdvancedGui.Components.Renderable;
-import GameTesting.AdvancedGui.Console.Debug;
 import GameTesting.AdvancedGui.Main;
 import GameTesting.AdvancedGui.PongGame.Models.Particles.Particle;
 import GameTesting.AdvancedGui.PongGame.Models.Point;

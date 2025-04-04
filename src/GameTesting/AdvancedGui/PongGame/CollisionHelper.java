@@ -1,6 +1,6 @@
 package GameTesting.AdvancedGui.PongGame;
 
-import GameTesting.AdvancedGui.Components.CollisionArea;
+import GameTesting.AdvancedGui.PongGame.Models.CollisionArea;
 import GameTesting.AdvancedGui.PongGame.Models.Pair;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
 import GameTesting.AdvancedGui.PongGame.Models.Rectangle;
@@ -66,15 +66,15 @@ public class CollisionHelper {
         objectCorners.add(far);
 
         for (Point p : objectCorners) {
-            if (!pointIsInArea(collisionArea, p)) return true;
+            if (!pointIsInArea(collisionArea.getArea(), p)) return true;
         }
         return false;
     }
 
 
-    public static boolean pointIsInArea(CollisionArea area, Point point) {
+    public static boolean pointIsInArea(Rectangle area, Point point) {
         int x1 = point.getX(), y1 = point.getY();
-        int x2 = area.getArea().getPoint().getX(), y2 = area.getArea().getPoint().getY();
+        int x2 = area.getPoint().getX(), y2 = area.getPoint().getY();
         boolean xComp = x1 >= x2 && x1 <= x2 + area.getWidth();
         boolean yComp = y1 >= y2 && y1 <= y2 + area.getHeight();
 
