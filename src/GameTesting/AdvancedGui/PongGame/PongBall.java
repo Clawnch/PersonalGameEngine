@@ -6,6 +6,7 @@ import GameTesting.AdvancedGui.Components.Drawable;
 import GameTesting.AdvancedGui.Components.GameComponent;
 import GameTesting.AdvancedGui.PongGame.HelperClasses.MovementHelper;
 import GameTesting.AdvancedGui.PongGame.HelperClasses.RenderHelper;
+import GameTesting.AdvancedGui.PongGame.Models.Sprites.SpriteBase;
 
 import java.util.Objects;
 
@@ -22,16 +23,20 @@ public class PongBall extends Drawable implements GameComponent {
     private int speed = 3;
     private int rotationSpeed = 3;
 
+    private SpriteBase ballSprite;
+
 
     public PongBall(int initX, int initY, Rectangle bounds) {
         height = 16;
         width = height;
         position = new Point(initX, initY);
+        ballSprite = new SpriteBase("Ball.png");
     }
 
     @Override
     public void render() {
-        RenderHelper.renderColor(this, 0xDDFFDD);
+        //RenderHelper.renderColor(this, 0xDDFFDD);
+        RenderHelper.renderSprite(ballSprite, position.getX(), position.getY());
     }
 
     @Override
@@ -162,11 +167,11 @@ public class PongBall extends Drawable implements GameComponent {
         int diffSub = 0;
         int diffAdd = 0;
 
-        for (int add = (int)directionToGravity; !withinRange(moveDir, add, 5); add++) {
+        for (int add = (int)directionToGravity; !withinRange(moveDir, add, rotationSpeed); add++) {
             if (add > 360) add -= 360;
             diffAdd++;
         }
-        for (int sub = (int)directionToGravity; !withinRange(moveDir, sub, 5); sub--) {
+        for (int sub = (int)directionToGravity; !withinRange(moveDir, sub, rotationSpeed); sub--) {
             if (sub < 0) sub += 360;
             diffSub++;
         }

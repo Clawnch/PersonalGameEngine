@@ -4,6 +4,7 @@ import GameTesting.AdvancedGui.Components.Drawable;
 import GameTesting.AdvancedGui.Components.Renderable;
 import GameTesting.AdvancedGui.Main;
 import GameTesting.AdvancedGui.PongGame.Models.Point;
+import GameTesting.AdvancedGui.PongGame.Models.Sprites.SpriteBase;
 
 public class RenderHelper {
 
@@ -22,6 +23,27 @@ public class RenderHelper {
                 if (isOnScreen(x, y) && index > 0 && index < pixels.length) pixels[index] = color;
             }
         }
+    }
+
+    public static void renderPixels(int[] spritePixels, int startX, int startY, int width, int height) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int xShift = x + startX;
+                int yShift = y + startY;
+                int spriteIndex = x + (y * width);
+                int screenIndex = xShift + (yShift * Main.width);
+                if (isOnScreen(xShift, yShift) && screenIndex > 0 && screenIndex < pixels.length) {
+                    pixels[screenIndex] = spritePixels[spriteIndex];
+                }
+            }
+        }
+    }
+
+    public static void renderSprite(SpriteBase sprite, int posX, int posY) {
+        int[] spritePixels = sprite.getPixels();
+        int height = sprite.getHeight();
+        int width = sprite.getWidth();
+        renderPixels(spritePixels, posX, posY, width, height);
     }
 
     private static boolean isOnScreen(int x, int y) {
